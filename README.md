@@ -1,0 +1,2 @@
+# Knowledge_Base-project
+一个用Electron前端结合harness做的个人知识库管理
