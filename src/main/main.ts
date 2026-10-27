@@ -16,8 +16,9 @@ function createWindow() {
     minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, '..', 'preload', 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
+      contextIsolation: true,   // 界面代码和 preload 隔离
+      nodeIntegration: false,   // 界面里根本没有 Node 环境
+      sandbox: false,
     },
     title: 'Knowledge Base',
   });

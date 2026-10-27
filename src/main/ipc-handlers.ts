@@ -1,4 +1,4 @@
-import { IpcMain } from 'electron';
+import { IpcMain, dialog } from 'electron';
 import { DocumentService } from '../services/document-service';
 import { IndexingService } from '../services/indexing-service';
 import { QaService } from '../services/qa-service';
@@ -50,5 +50,23 @@ export function registerIpcHandlers(ipcMain: IpcMain, services: Services) {
 
   ipcMain.handle(IPC_CHANNELS.GET_HISTORY, async () => {
     return qaService.getHistory();
+  });
+
+  // Dialog
+  ipcMain.handle(IPC_CHANNELS.DIALOG_OPEN_FILE, async () => {
+    const result = await dialog.showOpenDialog({
+      title: 'Select a document to import',
+      properties: ['openFile'],
+      filters: [
+        { name: 'Documents', extensions: ['md', 'txt', 'markdown'] },
+        { name: 'All Files', extensions: ['*'] },
+      ],
+    });
+
+    if (result.canceled || result.filePaths.length === 0) {
+      return null;
+    }
+
+    return result.filePaths[0];
   });
 }

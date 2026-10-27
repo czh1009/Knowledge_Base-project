@@ -19,6 +19,9 @@ declare global {
         ask: (question: string) => Promise<import('../shared/types').QAResponse>;
         history: () => Promise<import('../shared/types').QAHistory[]>;
       };
+      dialog: {
+        openFile: () => Promise<string | null>;
+      };
     };
   }
 }

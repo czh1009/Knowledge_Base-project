@@ -17,6 +17,9 @@ const api = {
     ask: (question: string) => ipcRenderer.invoke(IPC_CHANNELS.ASK_QUESTION, question),
     history: () => ipcRenderer.invoke(IPC_CHANNELS.GET_HISTORY),
   },
+  dialog: {
+    openFile: () => ipcRenderer.invoke(IPC_CHANNELS.DIALOG_OPEN_FILE),
+  },
 };
 
 contextBridge.exposeInMainWorld('knowledgeBase', api);

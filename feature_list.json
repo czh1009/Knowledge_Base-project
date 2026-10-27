@@ -7,32 +7,40 @@
       "name": "Window Launch",
       "description": "Electron app opens a BrowserWindow with correct dimensions and preload script",
       "status": "pass",
-      "evidence": "npm run dev launches window at 1200x800 with contextIsolation=true and nodeIntegration=false",
-      "testedAt": "2026-03-30T10:00:00Z"
+      "evidence": "npm run dev 启动后窗口可见；DevTools Console 执行 typeof window.knowledgeBase 返回 'object'。注意：main.ts webPreferences 必须含 sandbox: false，否则 preload 因沙箱 require 白名单无法加载 ../shared/types，桥会静默断裂",
+      "testedAt": "2026-10-25T12:30:00Z"
     },
     {
       "id": "document-list",
       "name": "Document List Panel",
       "description": "Left sidebar shows imported documents with empty state message",
       "status": "pass",
-      "evidence": "DocumentList component renders empty state when no documents, shows document cards when data present",
-      "testedAt": "2026-03-30T10:05:00Z"
+      "evidence": "DevTools Console 执行 window.knowledgeBase.documents.import('C:/Users/czh18/Desktop/提示词.md') 后点 Refresh，左侧列表显示 '提示词 5.7 KB'(Documents (1))",
+      "testedAt": "2026-10-25T12:30:00Z"
     },
     {
       "id": "question-panel",
       "name": "Question Panel",
       "description": "Bottom input bar accepts questions and submits via IPC",
       "status": "pass",
-      "evidence": "QuestionPanel renders text input and Ask button, submits to window.knowledgeBase.qa.ask on Enter or click",
-      "testedAt": "2026-03-30T10:08:00Z"
+      "evidence": "选中文档后在底部输入问题并点 Ask,UI 显示 mock 回答；%APPDATA%\\knowledge-base\\knowledge-base-data\\qa-history.json 于 2026-10-25 12:21 追加记录，证明 IPC 问答链路走通",
+      "testedAt": "2026-10-25T12:30:00Z"
     },
     {
       "id": "data-directory",
       "name": "Data Directory",
       "description": "PersistenceService creates and manages userData/knowledge-base-data directory",
       "status": "pass",
-      "evidence": "PersistenceService constructor calls ensureDirectories() creating data, documents, and index subdirectories",
-      "testedAt": "2026-03-30T10:10:00Z"
+      "evidence": "真实目录为 %APPDATA%\\knowledge-base\\knowledge-base-data(Electron 默认 userData,dev.js 未重定向)；子目录为 content/documents/index;documents\\提示词.md 5849 字节，与 UI 显示的 5.7 KB 一致",
+      "testedAt": "2026-10-25T12:30:00Z"
+    },
+    {
+      "id": "import-button-ui",
+      "name": "Import Button UI Entry",
+      "description": "Import button opens a native file dialog via IPC and imports the selected file",
+      "status": "pass",
+      "evidence": "npm run check 与 npm run build 均退出码 0；npm run dev 后在 DevTools Console 执行 typeof window.knowledgeBase 返回 'object'，执行 typeof window.knowledgeBase.dialog.openFile 返回 'function'。点击 + Import 弹出系统文件选择框，选 retrieval-plan.md 点 Open，左侧列表变为 Documents (2)，显示 '提示词 5.7 KB' 与 'retrieval-plan 1.6 KB'，Console 无红色报错；在 cmd 执行 dir %APPDATA%\\knowledge-base\\knowledge-base-data\\documents 可见 retrieval-plan.md，1.6 KB 与 UI 一致",
+      "testedAt": "2026-10-25T23:34:50+08:00"
     }
   ]
 }

@@ -1,9 +1,9 @@
 import { Document } from '../../shared/types';
 
 interface Props {
-  documents: Document[];
-  onSelect: (doc: Document) => void;
-  selectedId: string | null;
+  documents: Document[];  // 文档列表
+  onSelect: (doc: Document) => void;  // 选择文档回调
+  selectedId: string | null;  // 当前选中的文档 ID
 }
 
 export function DocumentList({ documents, onSelect, selectedId }: Props) {

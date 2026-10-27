@@ -5,27 +5,6 @@ import { DocumentDetail } from './components/DocumentDetail';
 import { StatusBar } from './components/StatusBar';
 import { Document, AppStatus, QAResponse } from '../shared/types';
 
-declare global {
-  interface Window {
-    knowledgeBase: {
-      documents: {
-        list: () => Promise<Document[]>;
-        import: (filePath: string) => Promise<Document>;
-        get: (id: string) => Promise<Document | null>;
-        delete: (id: string) => Promise<boolean>;
-      };
-      indexing: {
-        start: (documentId?: string) => Promise<{ status: string }>;
-        status: () => Promise<AppStatus>;
-        chunks: (documentId: string) => Promise<Array<{ id: string; content: string; index: number }>>;
-      };
-      qa: {
-        ask: (question: string) => Promise<QAResponse>;
-        history: () => Promise<Array<{ question: string; response: QAResponse }>>;
-      };
-    };
-  }
-}
 
 export function App() {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -40,7 +19,7 @@ export function App() {
   const refreshDocuments = useCallback(async () => {
     try {
       const docs = await window.knowledgeBase.documents.list();
-      setDocuments(docs);
+      setDocuments(docs);  // 用全新的数组替换 → React 察觉变化 → 重渲染
       const status = await window.knowledgeBase.indexing.status();
       setAppStatus(status);
     } catch (err) {
@@ -49,10 +28,15 @@ export function App() {
   }, []);
 
   const handleImport = useCallback(async () => {
-    // In a real app this would open a file dialog.
-    // For the course, we'll trigger import via the dev console or init script.
-    console.log('Import triggered - use window.knowledgeBase.documents.import(filePath)');
-  }, []);
+    try {
+      const filePath = await window.knowledgeBase.dialog.openFile();
+      if (!filePath) return; // 用户关闭了文件框
+      await window.knowledgeBase.documents.import(filePath);
+      await refreshDocuments();
+    } catch (err) {
+      console.error('Import failed:', err);
+    }
+  }, [refreshDocuments]);
 
   const handleSelectDocument = useCallback((doc: Document) => {
     setSelectedDoc(doc);

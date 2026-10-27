@@ -60,6 +60,9 @@ export const IPC_CHANNELS = {
   ASK_QUESTION: 'qa:ask',
   GET_HISTORY: 'qa:history',
 
+  // Dialog
+  DIALOG_OPEN_FILE: 'dialog:openFile',
+
   // App status
   GET_STATUS: 'app:status',
 } as const;

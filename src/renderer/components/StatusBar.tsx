@@ -31,7 +31,7 @@ export function StatusBar({ status }: Props) {
           borderRadius: '50%',
           background: statusColor,
           marginRight: '6px',
-        }} />
+        }} />  {/* {} 里嵌入 JS 表达式 */}
         Index: {status.indexStatus}
       </span>
       <span>Documents: {status.documentsLoaded}</span>

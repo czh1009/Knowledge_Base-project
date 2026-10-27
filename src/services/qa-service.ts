@@ -1,4 +1,4 @@
-import { QAResponse, QAHistory, Citation, Chunk } from '../shared/types';
+import { QAResponse, QAHistory, Citation } from '../shared/types';
 import { PersistenceService } from './persistence-service';
 import { IndexingService } from './indexing-service';
 
@@ -10,32 +10,32 @@ const MOCK_PATTERNS: Array<{
   answer: string;
   excerpt: string;
 }> = [
-  {
-    keywords: ['design', 'architecture', 'pattern'],
-    answer: 'The system uses a layered architecture with clear boundaries between the main process, preload scripts, and renderer. Each layer communicates through typed IPC channels, and the services layer handles business logic independently of the UI.',
-    excerpt: 'The system uses a layered architecture with clear boundaries',
-  },
-  {
-    keywords: ['import', 'document', 'file'],
-    answer: 'Documents are imported by copying the source file to the local data directory. The system extracts text content and creates metadata including title, filename, size, and import timestamp. After import, documents can be indexed for search.',
-    excerpt: 'Documents are imported by copying the source file',
-  },
-  {
-    keywords: ['index', 'chunk', 'search'],
-    answer: 'The indexing pipeline splits documents into chunks of approximately 500 characters at paragraph boundaries. Each chunk includes metadata like character count and word count. The index enables grounded Q&A with citations pointing to specific document sections.',
-    excerpt: 'The indexing pipeline splits documents into chunks',
-  },
-  {
-    keywords: ['retrieval', 'search', 'query'],
-    answer: 'Retrieval works by matching query keywords against indexed chunks. The system ranks chunks by keyword overlap and returns the most relevant excerpts as citations alongside the generated answer.',
-    excerpt: 'Retrieval works by matching query keywords against indexed chunks',
-  },
-  {
-    keywords: ['meeting', 'notes', 'summary'],
-    answer: 'The meeting summary indicates that the team discussed implementing a retrieval-augmented generation pipeline. Key decisions included using local chunk storage and citation-based verification to ensure answer accuracy.',
-    excerpt: 'The team discussed implementing a retrieval-augmented generation pipeline',
-  },
-];
+    {
+      keywords: ['design', 'architecture', 'pattern'],
+      answer: 'The system uses a layered architecture with clear boundaries between the main process, preload scripts, and renderer. Each layer communicates through typed IPC channels, and the services layer handles business logic independently of the UI.',
+      excerpt: 'The system uses a layered architecture with clear boundaries',
+    },
+    {
+      keywords: ['import', 'document', 'file'],
+      answer: 'Documents are imported by copying the source file to the local data directory. The system extracts text content and creates metadata including title, filename, size, and import timestamp. After import, documents can be indexed for search.',
+      excerpt: 'Documents are imported by copying the source file',
+    },
+    {
+      keywords: ['index', 'chunk', 'search'],
+      answer: 'The indexing pipeline splits documents into chunks of approximately 500 characters at paragraph boundaries. Each chunk includes metadata like character count and word count. The index enables grounded Q&A with citations pointing to specific document sections.',
+      excerpt: 'The indexing pipeline splits documents into chunks',
+    },
+    {
+      keywords: ['retrieval', 'search', 'query'],
+      answer: 'Retrieval works by matching query keywords against indexed chunks. The system ranks chunks by keyword overlap and returns the most relevant excerpts as citations alongside the generated answer.',
+      excerpt: 'Retrieval works by matching query keywords against indexed chunks',
+    },
+    {
+      keywords: ['meeting', 'notes', 'summary'],
+      answer: 'The meeting summary indicates that the team discussed implementing a retrieval-augmented generation pipeline. Key decisions included using local chunk storage and citation-based verification to ensure answer accuracy.',
+      excerpt: 'The team discussed implementing a retrieval-augmented generation pipeline',
+    },
+  ];
 
 export class QaService {
   private persistence: PersistenceService;
